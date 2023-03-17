@@ -34,7 +34,10 @@ suites:
         - test/integration/default
     attributes:
   - name: stala
+    run_list:
+      - recipe[postgres::default]
     verifier:
       inspec_tests:
         - test/integration/default
     attributes:
+
