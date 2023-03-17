@@ -5,7 +5,7 @@
 
 unless os.windows?
   # This is an example test, replace with your own test.
-  describe user('rootttesty'), :skip do
+  describe user('rootzmiany'), :skip do
     it { should exist }
   end
 end
