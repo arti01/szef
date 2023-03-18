@@ -36,3 +36,5 @@ end
 service 'postgresql-13' do
     action :start
 end
+
+include_recipe '::testowa'
