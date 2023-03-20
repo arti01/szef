@@ -7,23 +7,12 @@
 require 'spec_helper'
 
 describe 'postgres::default' do
-  context 'When all attributes are default, on Ubuntu 18.04' do
-    # for a complete list of available platforms and versions see:
-    # https://github.com/chefspec/fauxhai/blob/master/PLATFORMS.md
-    platform 'ubuntu', '18.04'
-
-    it 'converges successfully' do
-      expect { chef_run }.to_not raise_error
-    end
-  end
-
-  context 'When all attributes are default, on CentOS 7' do
-    # for a complete list of available platforms and versions see:
-    # https://github.com/chefspec/fauxhai/blob/master/PLATFORMS.md
-    platform 'bento/centos-7'
-
-    it 'converges successfully' do
-      expect { chef_run }.to_not raise_error
+  context 'zmiany hasla' do
+    let(:chef_run) { ChefSpec::SoloRunner.new(platform: 'centos', version: '7').converge(described_recipe) }
+    describe 'runs a execute with the default action' do
+     it { is_expected.to install_yum_package('postgresql13-server') }
+     it { is_expected.to run_execute('init_bazy') }
+     #it { is_expected.to run_execute('user_postgres') }
     end
   end
 end
