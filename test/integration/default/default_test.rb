@@ -14,3 +14,9 @@ end
 describe port(5432) do
   it { should be_listening }
 end
+
+sql = postgres_session('postgres', 'postgres', 'localhost', 5432)
+
+describe sql.query('SELECT * FROM pg_shadow WHERE passwd IS NULL;', ['postgres']) do
+  its('output') { should eq('') }
+end

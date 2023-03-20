@@ -3,15 +3,6 @@
 # Recipe:: default
 #
 # Copyright:: 2023, The Authors, All Rights Reserved.
-file '/tmp/index.php' do
-    content '<html>This is a placeholder for the home page.</html>'
-    mode '0755'
-end
-
-file '/tmp/index.ph' do
-    content '<html>he home page.</html>'
-    mode '0755'
-end
 
 yum_repository 'postgres_repo' do
     description 'OurCo yum repository'
@@ -28,13 +19,30 @@ yum_package 'mc' do
     action :install
 end
 
-execute 'start_bazy' do
+directory '/var/lib/pgsql/13/data' do
+    owner 'postgres'
+    mode '0700'
+    recursive true
+end
+
+execute 'init_bazy' do
     command 'sudo /usr/pgsql-13/bin/postgresql-13-setup initdb'
     only_if { ::Dir.empty?('/var/lib/pgsql/13/data') }
+    notifies :run, 'execute[user_postgres]'
 end
 
 service 'postgresql-13' do
     action :start
 end
 
-include_recipe '::testowa'
+execute 'user_postgres' do
+    command 'psql -c "ALTER USER postgres password \'postgres\';"'
+    user 'postgres'
+    action :nothing
+end
+
+log 'soe udalo' do
+    level :info
+end
+
+include_recipe 'postgres::testowa'
